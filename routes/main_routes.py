@@ -56,6 +56,9 @@ def login():
 def dashboard():
     # Query all groups created by the logged-in user
     user_groups = Group.query.filter_by(created_by=current_user.id).all()
+    memberships = Membership.query.filter_by(user_id=current_user.id).all()
+    joined_group_ids = [m.group_id for m in memberships]
+    joined_groups = Group.query.filter(Group.id.in_(joined_group_ids)).all()
 
     return render_template(
         'dashboard.html',
@@ -268,7 +271,7 @@ def logout():
 #                 "price": item_price,
 #                 "share": item_share
 #             })
-#             item_index += 1
+#             item_index += 
 
 #         members_data.append({
 #             "name": member_name,
@@ -281,3 +284,60 @@ def logout():
 #     # TODO: Save to DB or pass to template
 #     flash("Form submitted successfully!", "success")
 #     return redirect(url_for('main.dashboard'))
+@main.route('/join/<invite_code>')
+@login_required
+def join_group(invite_code):
+    group = Group.query.filter_by(invite_code=invite_code).first_or_404()
+    user = current_user
+
+    # Check if already a member
+    existing = Membership.query.filter_by(user_id=user.id, group_id=group.id).first()
+    if existing:
+        return redirect(url_for('main.group_detail', group_id=group.id))
+
+    # Step 1: Try full match on guest name
+    guest_match = Membership.query.filter_by(group_id=group.id, guest_name=user.username, is_guest=True).first()
+
+    if guest_match:
+        guest_match.user_id = user.id
+        guest_match.is_guest = False
+        guest_match.status = "member"
+        db.session.commit()
+        return redirect(url_for('main.group_detail', group_id=group.id))
+
+    # Step 2: Try partial match on guest name
+    partial_match = Membership.query.filter(
+        Membership.group_id == group.id,
+        Membership.is_guest == True,
+        Membership.guest_name.ilike(f"%{user.username}%")
+    ).first()
+
+    if partial_match:
+        partial_match.user_id = user.id
+        partial_match.is_guest = False
+        partial_match.status = "member"
+        db.session.commit()
+        flash("Joined group by partial guest name match.", "success")
+        return redirect(url_for('main.group_detail', group_id=group.id))
+
+    # Step 3: Create new membership
+    new_member = Membership(
+        user_id=user.id,
+        group_id=group.id,
+        is_guest=False,
+        status="member"
+    )
+    db.session.add(new_member)
+    db.session.commit()
+    return redirect(url_for('main.group_detail', group_id=group.id))
+
+@main.route('/join_code', methods=['POST'])
+@login_required
+def join_by_code():
+    invite_code = request.form.get('invite_code')
+    if not invite_code:
+        flash("No invite code provided.", "error")
+        return redirect(url_for('main.dashboard'))
+
+    # Reuse the same logic as the /join/<invite_code> route
+    return redirect(url_for('main.join_group', invite_code=invite_code))
