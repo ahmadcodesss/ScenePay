@@ -63,7 +63,8 @@ def dashboard():
     return render_template(
         'dashboard.html',
         username=current_user.username,
-        groups=user_groups
+        groups=user_groups, joined_groups=joined_groups
+
     )
 
 
@@ -320,16 +321,8 @@ def join_group(invite_code):
         flash("Joined group by partial guest name match.", "success")
         return redirect(url_for('main.group_detail', group_id=group.id))
 
-    # Step 3: Create new membership
-    new_member = Membership(
-        user_id=user.id,
-        group_id=group.id,
-        is_guest=False,
-        status="member"
-    )
-    db.session.add(new_member)
-    db.session.commit()
-    return redirect(url_for('main.group_detail', group_id=group.id))
+
+    return redirect(url_for('main.dashboard', group_id=group.id))
 
 @main.route('/join_code', methods=['POST'])
 @login_required

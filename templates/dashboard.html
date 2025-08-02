@@ -10,7 +10,7 @@
   <button type="submit">Join</button>
 </form>
 
-  <h2>Your Groups</h2>
+  <h2>Groups you created</h2>
 
   {% if groups %}
     <div style="overflow-x: auto; white-space: nowrap;">
@@ -34,5 +34,37 @@
       {% endfor %}
     </div>
   {% else %}
-    <p>No groups yet. <a href="{{ url_for('main.create_group') }}">Create one</a></p>
+    <p>No groups yet.</p>
   {% endif %}
+  <h2>Groups You Joined</h2>
+
+{% if joined_groups %}
+  <div style="overflow-x: auto; white-space: nowrap;">
+    {% for group in joined_groups %}
+      <a href="{{ url_for('main.group_detail', group_id=group.id) }}"
+         style="
+           display: inline-block;
+           width: 200px;
+           height: 100px;
+           margin: 10px;
+           padding: 10px;
+           border: 1px solid #ccc;
+           border-radius: 8px;
+           text-decoration: none;
+           color: #333;
+           background: #f0f8ff;
+           overflow: hidden;
+         ">
+        <h4>{{ group.name }}</h4>
+        <p style="font-size: 12px;">{{ group.description or 'No description' }}</p>
+        <p style="font-size: 10px;">
+          Created on {{ group.created_at.strftime('%Y-%m-%d') }}<br>
+          by {{ group.Creator.username }}
+        </p>
+      </a>
+    {% endfor %}
+  </div>
+{% else %}
+  <p>You haven't joined any groups yet.</p>
+{% endif %}
+</ul>
