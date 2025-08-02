@@ -3,22 +3,91 @@
 <head>
   <meta charset="UTF-8">
   <title>Upload Receipt - BillSplitter+</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f9;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input[type="file"] {
+      width: 100%;
+    }
+
+    button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    hr {
+      margin: 30px 0;
+    }
+
+    .alt-option {
+      text-align: center;
+    }
+
+    .alt-option button {
+      background-color: #6c757d;
+    }
+
+    .alt-option button:hover {
+      background-color: #5a6268;
+    }
+  </style>
 </head>
 <body>
-  <h2>📄 Upload Your Receipt for {{ group_id}}</h2>
+  <div class="container">
+    <h2>📄 Upload Receipt for Group #{{ group_id }}</h2>
 
-  <form action="{{ url_for('upload.upload_receipt', group_id=group_id) }}" method="post" enctype="multipart/form-data">
-    <label for="receipt">Select image file:</label><br>
-    <input type="file" name="receipt_image" accept="image/*" required><br><br>
+    <form action="{{ url_for('upload.upload_receipt', group_id=group_id) }}" method="post" enctype="multipart/form-data">
+      <label for="receipt">Select Image File:</label>
+      <input type="file" name="receipt_image" accept="image/*" required>
+      <button type="submit">Upload and Continue</button>
+    </form>
 
-    <button type="submit">Upload and Continue</button>
-  </form>
+    <hr>
 
-  <hr>
-
-  <p>Don't have a receipt? You can still add everything manually.</p>
-  <form action="{{ url_for('main.manual_form', group_id=group_id) }}" method="get">
-    <button type="submit">Continue without uploading</button>
-  </form>
+    <div class="alt-option">
+      <p>Don't have a receipt?</p>
+      <form action="{{ url_for('main.manual_form', group_id=group_id) }}" method="get">
+        <button type="submit">Continue Without Uploading</button>
+      </form>
+    </div>
+  </div>
 </body>
 </html>

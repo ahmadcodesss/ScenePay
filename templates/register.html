@@ -1,15 +1,31 @@
-<form method="POST">
-  {{ form.hidden_tag() }}
-  <div>
-    {{ form.username.label }} {{ form.username(size=32) }}
-  </div>
-  <div>
-    {{ form.password.label }} {{ form.password(size=32) }}
-  </div>
-  <div>
-    {{ form.confirm_password.label }} {{ form.confirm_password(size=32) }}
-  </div>
-  <div>
-    {{ form.submit() }}
-  </div>
-</form>
+{% extends "base.html" %}
+{% block content %}
+  <h2 style="text-align: center;">📝 Register for BillSplitter+</h2>
+
+  <form method="POST" style="max-width: 500px; margin: auto; background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+    {{ form.hidden_tag() }}
+
+    <div style="margin-bottom: 15px;">
+      {{ form.username.label }}<br>
+      {{ form.username(size=32, class_="form-control", style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;") }}
+    </div>
+
+    <div style="margin-bottom: 15px;">
+      {{ form.password.label }}<br>
+      {{ form.password(size=32, class_="form-control", style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;") }}
+    </div>
+
+    <div style="margin-bottom: 15px;">
+      {{ form.confirm_password.label }}<br>
+      {{ form.confirm_password(size=32, class_="form-control", style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;") }}
+    </div>
+
+    <div style="text-align: center;">
+      {{ form.submit(class_="btn btn-primary", style="padding: 8px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px;") }}
+    </div>
+
+    <p style="text-align: center; margin-top: 15px;">
+      Already have an account? <a href="{{ url_for('main.login') }}">Login here</a>
+    </p>
+  </form>
+{% endblock %}

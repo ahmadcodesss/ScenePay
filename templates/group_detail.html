@@ -1,36 +1,46 @@
-<h2>{{ group.name }}</h2>
-<p>{{ group.description or 'No description provided.' }}</p>
-<p>Created on: {{ group.created_at.strftime("%Y-%m-%d") }}</p>
-<br>
-<br>
-<br>
-<p><strong>Invite Code:</strong> 
-  {{ group.invite_code }}
-</p>
+{% extends "base.html" %}
+{% block title %}{{ group.name }} - BillSplitter+{% endblock %}
 
-<h4>Payment Overview</h4>
-<ul>
-  {% for entry in payment_info %}
-    <li>
-      {{ entry.username }} — owes ₹{{ "%.2f"|format(entry.amount) }}
+{% block content %}
+<div class="dashboard-container">
+  <h2>📂 {{ group.name }}</h2>
+  <p><strong>Description:</strong> {{ group.description or 'No description provided.' }}</p>
+  <p><strong>📅 Created on:</strong> {{ group.created_at.strftime("%Y-%m-%d") }}</p>
+  <p><strong>🔗 Invite Code:</strong> {{ group.invite_code }}</p>
 
-      <form action="{{ url_for('main.group_detail', group_id=group.id) }}" method="POST" style="display:inline;">
-         <input type="hidden" name="csrf_token" value="{{ new_token }}">
-        <input type="hidden" name="split_id" value="{{ entry.id }}">
-        <select name="status">
-          <option value="paid" {% if entry.status == 'paid' %}selected{% endif %}>Paid</option>
-          <option value="unpaid" {% if entry.status == 'unpaid' %}selected{% endif %}>Unpaid</option>
-        </select>
-        <button type="submit">Update</button>
-      </form>
+  <hr>
 
-      {% if entry.status == 'paid' %}
-        <span style="color: green;">✅ Paid</span>
-      {% else %}
-        <span style="color: red;">❌ Unpaid</span>
-      {% endif %}
-    </li>
-  {% endfor %}
-</ul>
+  <h3>💳 Payment Overview</h3>
+  {% if payment_info %}
+    <ul style="list-style: none; padding: 0;">
+      {% for entry in payment_info %}
+        <li style="margin-bottom: 16px; padding: 12px; background: #f9f9f9; border-radius: 8px;">
+          <strong>{{ entry.username }}</strong> owes 
+          <span style="font-weight: bold;">₹{{ "%.2f"|format(entry.amount) }}</span>
 
-<a href="{{ url_for('main.dashboard') }}">← Back to dashboard</a>
+          <form action="{{ url_for('main.group_detail', group_id=group.id) }}" method="POST" style="display:inline-block; margin-left: 20px;">
+            <input type="hidden" name="csrf_token" value="{{ new_token }}">
+            <input type="hidden" name="split_id" value="{{ entry.id }}">
+            <select name="status" class="form-control" style="display:inline-block; width:auto;">
+              <option value="paid" {% if entry.status == 'paid' %}selected{% endif %}>✅ Paid</option>
+              <option value="unpaid" {% if entry.status == 'unpaid' %}selected{% endif %}>❌ Unpaid</option>
+            </select>
+            <button type="submit" class="btn" style="margin-left: 6px;">Update</button>
+          </form>
+
+          {% if entry.status == 'paid' %}
+            <span style="color: green; font-weight: bold; margin-left: 10px;">✅ Paid</span>
+          {% else %}
+            <span style="color: red; font-weight: bold; margin-left: 10px;">❌ Unpaid</span>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No payment entries found.</p>
+  {% endif %}
+
+  <br>
+  <a href="{{ url_for('main.dashboard') }}" class="btn">← Back to Dashboard</a>
+</div>
+{% endblock %}

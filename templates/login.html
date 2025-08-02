@@ -1,12 +1,28 @@
 {% extends "base.html" %}
+{% block title %}Login - BillSplitter+{% endblock %}
+
 {% block content %}
-  <h2>Login</h2>
+<div class="form-container">
+  <h2>🔐 Login to BillSplitter+</h2>
+
   <form method="POST">
     {{ form.hidden_tag() }}
-    <div>{{ form.username.label }} {{ form.username() }}</div>
-    <div>{{ form.password.label }} {{ form.password() }}</div>
-    <div>{{ form.submit() }}</div>
-    <p>Don't have an account? <a href="{{ url_for('main.register') }}">Register here</a></p>
 
+    <div style="margin-bottom: 15px;">
+      <label><strong>{{ form.username.label }}</strong></label><br>
+      {{ form.username(class="form-input") }}
+    </div>
+
+    <div style="margin-bottom: 15px;">
+      <label><strong>{{ form.password.label }}</strong></label><br>
+      {{ form.password(class="form-input") }}
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      {{ form.submit(class="btn") }}
+    </div>
+
+    <p>🚪 Don’t have an account? <a href="{{ url_for('main.register') }}">Register here</a></p>
   </form>
+</div>
 {% endblock %}

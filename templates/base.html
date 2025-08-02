@@ -1,10 +1,113 @@
-<!-- templates/base.html -->
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>{% block title %}BillSplitter+{% endblock %}</title>
+    <style>
+      body {
+        font-family: 'Segoe UI', sans-serif;
+        background: #f4f7f9;
+        margin: 0;
+        padding: 20px;
+      }
+
+      .dashboard-container {
+        max-width: 900px;
+        margin: auto;
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      }
+
+      h2, h3 {
+        color: #333;
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 10px 16px;
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        text-decoration: none;
+        margin-top: 8px;
+      }
+
+      .btn:hover {
+        background-color: #0056b3;
+      }
+
+      .form-control {
+        padding: 8px;
+        width: 100%;
+        max-width: 300px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        margin-top: 6px;
+      }
+
+      .group-cards {
+        display: flex;
+        overflow-x: auto;
+        gap: 16px;
+        padding-bottom: 10px;
+      }
+
+      .group-card {
+        background: #f9f9f9;
+        padding: 16px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        min-width: 220px;
+        color: #333;
+        text-decoration: none;
+      }
+
+      .group-card.joined {
+        background: #f0f8ff;
+      }
+
+      .group-card:hover {
+        background: #e6f0ff;
+      }
+
+      .flash.success {
+        background-color: #d4edda;
+        color: #155724;
+        padding: 10px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+      }
+
+      .flash.error {
+        background-color: #f8d7da;
+        color: #721c24;
+        padding: 10px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+      }
+
+      a.logout-link {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        text-decoration: none;
+        background: #dc3545;
+        color: white;
+        padding: 10px 12px;
+        border-radius: 6px;
+      }
+
+      a.logout-link:hover {
+        background: #a51d2d;
+      }
+    </style>
 </head>
 <body>
+    <a href="{{ url_for('main.logout') }}" class="logout-link">Logout</a>
+
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         {% for category, message in messages %}
@@ -12,10 +115,7 @@
         {% endfor %}
       {% endif %}
     {% endwith %}
-  
 
     {% block content %}{% endblock %}
 </body>
-
-<a href="{{ url_for('main.logout') }}">Logout</a>
 </html>

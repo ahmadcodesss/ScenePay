@@ -1,18 +1,88 @@
 {% extends "base.html" %}
-{% block content %}
-<h2>Create New Group</h2>
-<form method="POST">
-  {{ form.hidden_tag() }}
-  <div>{{ form.name.label }} {{ form.name() }}</div>
-  <div>{{ form.description.label }} {{ form.description() }}</div>
-  <p>
-    {{ form.num_members.label }}<br>
-    {{ form.num_members(size=5) }}<br>
-    {% for error in form.num_members.errors %}
-    <span style="color: red;">{{ error }}</span>
-    {% endfor %}
-  </p>
-  <div>{{ form.submit() }}</div>
-</form>
 
+{% block content %}
+  <div class="form-container">
+    <h2>📦 Create New Group</h2>
+    <form method="POST">
+      {{ form.hidden_tag() }}
+
+      <div class="form-group">
+        <label>{{ form.name.label }}</label>
+        {{ form.name(class="form-control") }}
+      </div>
+
+      <div class="form-group">
+        <label>{{ form.description.label }}</label>
+        {{ form.description(class="form-control") }}
+      </div>
+
+      <div class="form-group">
+        <label>{{ form.num_members.label }}</label>
+        {{ form.num_members(class="form-control", size=5) }}
+        {% for error in form.num_members.errors %}
+          <div class="error">{{ error }}</div>
+        {% endfor %}
+      </div>
+
+      <button type="submit" class="submit-button">➕ Create Group</button>
+    </form>
+  </div>
+
+  <style>
+    .form-container {
+      max-width: 500px;
+      margin: 40px auto;
+      padding: 30px;
+      background-color: #f9f9f9;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-container h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #333;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    .error {
+      color: #c0392b;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    .submit-button {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      background-color: #0066cc;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .submit-button:hover {
+      background-color: #004e99;
+    }
+  </style>
 {% endblock %}
