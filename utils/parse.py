@@ -32,10 +32,10 @@ def parse_bill_text(text):
                   items[dish] = chosen_price
       
       return items
-load_dotenv()  # at top of your app
-pytesseract.pytesseract.tesseract_cmd = os.getenv("TESSERACT_CMD", "tesseract")
-text=pytesseract.image_to_string(r"C:\Users\DELL\Downloads\q.jpeg")
-dishes=parse_bill_text(text)
+# load_dotenv()  # at top of your app
+# pytesseract.pytesseract.tesseract_cmd = os.getenv("TESSERACT_CMD", "tesseract")
+# text=pytesseract.image_to_string(r"C:\Users\DELL\Downloads\q.jpeg")
+# dishes=parse_bill_text(text)
 
 # print("\n"+text+"\n")
 # for dish,price in dishes.items():
