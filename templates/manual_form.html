@@ -4,113 +4,221 @@
 <head>
   <meta charset="UTF-8">
   <title>Manual Entry Form - BillSplitter+</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 20px;
-      background-color: #f5f8fa;
-      color: #333;
-    }
-
-    h2 {
+    .manual-header {
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 32px;
     }
 
-    form {
-      max-width: 800px;
-      margin: auto;
-      background: #fff;
-      padding: 25px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    .manual-header h2 {
+      margin-bottom: 4px;
+    }
+
+    .manual-header p {
+      color: var(--text-soft);
+      font-size: 0.95rem;
+    }
+
+    .members-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+      margin-bottom: 28px;
     }
 
     .member-block {
-      border: 1px solid #ccc;
-      padding: 15px;
-      margin-bottom: 25px;
-      border-radius: 6px;
-      background: #f9f9f9;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
     }
 
-    .member-block label {
-      font-weight: bold;
+    .member-block-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .member-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--grad);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .guest-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: var(--text-soft);
+      font-weight: 500;
+      cursor: pointer;
+      margin: 0;
+    }
+
+    .guest-toggle input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: #C25CFC;
+      cursor: pointer;
+    }
+
+    .items-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
     .item-entry {
-      margin-top: 10px;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 8px;
+      padding: 12px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      animation: slideIn 0.25s ease;
     }
 
-    input[type="text"],
-    input[type="number"],
-    select {
-      width: 90%;
-      padding: 6px;
-      margin-top: 4px;
-      margin-bottom: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    button {
-      background-color: #007bff;
-      color: white;
-      border: none;
-      padding: 8px 14px;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 10px;
+    .item-entry label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-faint);
+      margin-bottom: 4px;
     }
 
-    button:hover {
-      background-color: #0056b3;
+    .item-entry input {
+      padding: 8px 10px;
+      font-size: 0.9rem;
     }
 
-    hr {
-      margin: 30px 0;
+    .add-dish-btn {
+      align-self: flex-start;
+      background: transparent !important;
+      color: #C7A8FF !important;
+      border: 1px dashed rgba(199, 168, 255, 0.4) !important;
+      box-shadow: none !important;
+      padding: 8px 16px !important;
+      font-size: 0.85rem !important;
+    }
+
+    .add-dish-btn:hover {
+      background: rgba(199, 168, 255, 0.08) !important;
+      border-color: #C7A8FF !important;
+      transform: none !important;
+    }
+
+    .summary-panel {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 24px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .summary-field label {
+      font-size: 0.8rem;
+      margin-bottom: 8px;
+    }
+
+    .submit-bar {
+      text-align: center;
+    }
+
+    .submit-bar button {
+      width: 100%;
+      padding: 16px;
+      font-size: 1.05rem;
+    }
+
+    @media (max-width: 640px) {
+      .members-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .item-entry {
+        grid-template-columns: 1fr;
+      }
+
+      .summary-panel {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 
 <body>
-  <h2>✍️ Manually Add Bill Details for Group: {{ group.name }}</h2>
-
-  <form method="post" action="{{ url_for('main.manual_form', group_id=group_id) }}">
-    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-
-    {% for i in range(group.num_members) %}
-    <div class="member-block" id="member-block-{{ i }}">
-      <label>👤 Member {{ i + 1 }} Username or Guest Name:</label><br>
-      <input type="text" name="members[{{ i }}][name]" required><br>
-
-      <label>🕵️ Is Guest?</label>
-      <input type="checkbox" name="members[{{ i }}][is_guest]" value="true"><br><br>
-
-      <div id="items-{{ i }}"></div>
-
-      <button type="button" onclick="addItem({{ i }})">➕ Add Dish</button>
+  <div class="dashboard-container">
+    <div class="manual-header">
+      <h2>Add bill details</h2>
+      <p>Group: {{ group.name }}</p>
     </div>
-    {% endfor %}
 
-    <hr>
+    <form method="post" action="{{ url_for('main.manual_form', group_id=group_id) }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
-    <label for="paid_by">💳 Who Paid?</label><br>
-    <select name="paid_by" required>
-      {% for i in range(group.num_members) %}
-      <option value="{{ i }}">{{ request.form.get('members[' ~ i ~ '][name]', 'Member ' ~ (i + 1)) }}</option>
-      {% endfor %}
-    </select>
+      <div class="members-grid">
+        {% for i in range(group.num_members) %}
+        <div class="member-block" id="member-block-{{ i }}">
+          <div class="member-block-head">
+            <div class="member-avatar">{{ i + 1 }}</div>
+            <input type="text" name="members[{{ i }}][name]" placeholder="Member {{ i + 1 }} name" required style="flex:1;">
+          </div>
 
-    <br><br>
+          <label class="guest-toggle">
+            <input type="checkbox" name="members[{{ i }}][is_guest]" value="true">
+            This is a guest
+          </label>
 
-    <label for="tax">💸 Tax Amount:</label><br>
-    <input type="number" name="tax" step="0.01" min="0">
+          <div class="items-list" id="items-{{ i }}"></div>
 
-    <br><br>
+          <button type="button" class="add-dish-btn" onclick="addItem({{ i }})">+ Add dish</button>
+        </div>
+        {% endfor %}
+      </div>
 
-    <button type="submit">✅ Submit Bill</button>
-  </form>
+      <div class="summary-panel">
+        <div class="summary-field">
+          <label for="paid_by">Who paid?</label>
+          <select name="paid_by" required>
+            {% for i in range(group.num_members) %}
+            <option value="{{ i }}">{{ request.form.get('members[' ~ i ~ '][name]', 'Member ' ~ (i + 1)) }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="summary-field">
+          <label for="tax">Tax amount (PKR)</label>
+          <input type="number" name="tax" step="0.01" min="0" placeholder="0.00">
+        </div>
+      </div>
+
+      <div class="submit-bar">
+        <button type="submit">Submit bill</button>
+      </div>
+    </form>
+  </div>
 
   <script>
     function addItem(memberIndex) {
@@ -119,14 +227,18 @@
 
       const html = `
         <div class="item-entry">
-          <label>🍽️ Item Name:</label><br>
-          <input type="text" name="members[${memberIndex}][items][${itemIndex}][name]" required><br>
-
-          <label>💰 Price (PKR):</label><br>
-          <input type="number" step="0.01" name="members[${memberIndex}][items][${itemIndex}][price]" required><br>
-
-          <label>🔢 Share (e.g. 1 for full, 0.5 for half):</label><br>
-          <input type="number" step="0.01" name="members[${memberIndex}][items][${itemIndex}][share]" required><br><br>
+          <div>
+            <label>Item</label>
+            <input type="text" name="members[${memberIndex}][items][${itemIndex}][name]" placeholder="e.g. Biryani" required>
+          </div>
+          <div>
+            <label>Price</label>
+            <input type="number" step="0.01" name="members[${memberIndex}][items][${itemIndex}][price]" placeholder="0.00" required>
+          </div>
+          <div>
+            <label>Share</label>
+            <input type="number" step="0.01" name="members[${memberIndex}][items][${itemIndex}][share]" placeholder="1" required>
+          </div>
         </div>
       `;
 
