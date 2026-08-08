@@ -6,38 +6,72 @@
   <span></span><span></span><span></span><span></span><span></span><span></span>
 </div>
 
-<div class="form-container login-card">
-  <div class="login-mark">S</div>
+<div class="auth-shell">
+  <div class="auth-brand">
+    <div class="login-mark">S</div>
+    <div class="login-wordmark">Scene<span>Pay</span></div>
+  </div>
 
-  <div class="login-wordmark">Scene<span>Pay</span></div>
+  <div class="auth-hero">
+    <h1 class="hero-headline">Three steps to<br>never chasing<br>anyone for money.</h1>
+    <p class="hero-sub">ScenePay takes the awkwardness out of splitting bills with roommates, trip groups, or food-sharing buddies.</p>
 
-  <h2 class="login-title">Create your account</h2>
-  <p class="login-sub">Start splitting bills with your group</p>
-
-  <form method="POST">
-    {{ form.hidden_tag() }}
-
-    <div class="form-group">
-      <label>{{ form.username.label }}</label>
-      {{ form.username(class="form-input") }}
+    <div class="hero-steps">
+      <div class="hero-step">
+        <div class="hero-step-num">1</div>
+        <div class="hero-step-line"></div>
+        <div class="hero-step-body">
+          <strong>Create a group</strong>
+          <p>Name it, add a description, set how many people are splitting.</p>
+        </div>
+      </div>
+      <div class="hero-step">
+        <div class="hero-step-num">2</div>
+        <div class="hero-step-line"></div>
+        <div class="hero-step-body">
+          <strong>Add the bill</strong>
+          <p>Enter items, prices, and who's sharing what — or invite others by link.</p>
+        </div>
+      </div>
+      <div class="hero-step">
+        <div class="hero-step-num">3</div>
+        <div class="hero-step-body">
+          <strong>Everyone settles up</strong>
+          <p>Track who's paid and who still owes, right from the dashboard.</p>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <div class="form-group">
-      <label>{{ form.password.label }}</label>
-      {{ form.password(class="form-input") }}
-    </div>
+  <div class="form-container login-card">
+    <h2 class="login-title">Create your account</h2>
+    <p class="login-sub">It takes less than a minute</p>
 
-    <div class="form-group">
-      <label>{{ form.confirm_password.label }}</label>
-      {{ form.confirm_password(class="form-input") }}
-    </div>
+    <form method="POST">
+      {{ form.hidden_tag() }}
 
-    <div class="form-group">
-      {{ form.submit(class="login-btn") }}
-    </div>
+      <div class="form-group">
+        <label>{{ form.username.label }}</label>
+        {{ form.username(class="form-input") }}
+      </div>
 
-    <p class="login-footer">Already have an account? <a href="{{ url_for('main.login') }}">Login here</a></p>
-  </form>
+      <div class="form-group">
+        <label>{{ form.password.label }}</label>
+        {{ form.password(class="form-input") }}
+      </div>
+
+      <div class="form-group">
+        <label>{{ form.confirm_password.label }}</label>
+        {{ form.confirm_password(class="form-input") }}
+      </div>
+
+      <div class="form-group">
+        {{ form.submit(class="login-btn") }}
+      </div>
+
+      <p class="login-footer">Already have an account? <a href="{{ url_for('main.login') }}">Login here</a></p>
+    </form>
+  </div>
 </div>
 
 <style>
@@ -73,33 +107,55 @@
     100% { transform: translateY(-10vh) scale(1); opacity: 0; }
   }
 
-  .login-card.form-container {
-    text-align: center;
+  .auth-shell {
+    max-width: 1080px;
+    margin: 40px auto;
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 48px;
+    align-items: center;
     position: relative;
-    animation: loginCardIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) both !important;
     z-index: 1;
+    padding: 0 20px;
   }
 
-  @keyframes loginCardIn {
-    0% { opacity: 0; transform: translateY(30px) scale(0.96); }
-    100% { opacity: 1; transform: translateY(0) scale(1); }
+  .auth-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+    grid-column: 1;
   }
 
-  .login-card .login-mark {
-    width: 60px;
-    height: 60px;
-    margin: 0 auto 16px;
-    border-radius: 16px;
+  .auth-brand .login-mark {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
     background: var(--grad);
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: var(--font-display);
-    font-size: 1.6rem;
+    font-size: 1.2rem;
     font-weight: 800;
     color: #fff;
-    box-shadow: 0 10px 30px rgba(124, 92, 252, 0.45);
-    animation: loginMarkFloat 3.5s ease-in-out infinite !important;
+    box-shadow: 0 8px 24px rgba(124, 92, 252, 0.4);
+    animation: loginMarkFloat 3.5s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+
+  .auth-brand .login-wordmark {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .auth-brand .login-wordmark span {
+    background: var(--grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
   @keyframes loginMarkFloat {
@@ -107,20 +163,100 @@
     50% { transform: translateY(-6px); }
   }
 
-  .login-wordmark {
-    font-family: var(--font-display) !important;
-    font-size: 1.15rem;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    color: var(--text) !important;
-    margin-bottom: 24px;
+  .auth-hero {
+    grid-column: 1;
+    animation: heroIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
-  .login-wordmark span {
+  @keyframes heroIn {
+    0% { opacity: 0; transform: translateX(-24px); }
+    100% { opacity: 1; transform: translateX(0); }
+  }
+
+  .hero-headline {
+    font-family: var(--font-display);
+    font-size: 2.1rem;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin: 0 0 16px;
+    color: var(--text);
+  }
+
+  .hero-sub {
+    color: var(--text-soft);
+    font-size: 1.02rem;
+    max-width: 440px;
+    margin: 0 0 36px;
+  }
+
+  .hero-steps {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero-step {
+    display: flex;
+    gap: 16px;
+    position: relative;
+  }
+
+  .hero-step-num {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    border-radius: 50%;
     background: var(--grad);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #fff;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+  }
+
+  .hero-step-line {
+    position: absolute;
+    left: 15px;
+    top: 32px;
+    width: 2px;
+    height: calc(100% - 12px);
+    background: var(--card-border);
+  }
+
+  .hero-step-body {
+    padding-bottom: 28px;
+  }
+
+  .hero-step-body strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 1rem;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+
+  .hero-step-body p {
+    margin: 0;
+    font-size: 0.87rem;
+    color: var(--text-faint);
+    max-width: 320px;
+  }
+
+  .login-card.form-container {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    text-align: center;
+    position: relative;
+    animation: loginCardIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) both !important;
+    margin: 0 !important;
+  }
+
+  @keyframes loginCardIn {
+    0% { opacity: 0; transform: translateY(24px) scale(0.97); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
   }
 
   .login-card .login-title {
@@ -206,10 +342,26 @@
     font-size: 0.88rem !important;
   }
 
+  @media (max-width: 880px) {
+    .auth-shell {
+      display: flex;
+      flex-direction: column-reverse;
+      gap: 32px;
+    }
+
+    .auth-brand {
+      order: -1;
+    }
+
+    .hero-headline {
+      font-size: 1.7rem;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .scenepay-particles span,
+    .auth-brand .login-mark, .auth-hero,
     .login-card.form-container,
-    .login-card .login-mark,
     .login-card .login-btn::after,
     .login-card .form-input {
       animation: none !important;
