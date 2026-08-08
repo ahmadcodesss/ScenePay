@@ -6,33 +6,73 @@
   <span></span><span></span><span></span><span></span><span></span><span></span>
 </div>
 
-<div class="form-container login-card">
-  <div class="login-mark">S</div>
+<div class="auth-shell">
+  <div class="auth-brand">
+    <div class="login-mark">S</div>
+    <div class="login-wordmark">Scene<span>Pay</span></div>
+  </div>
 
-  <div class="login-wordmark">Scene<span>Pay</span></div>
+  <div class="auth-hero">
+    <h1 class="hero-headline">Split bills without<br>the awkward math.</h1>
+    <p class="hero-sub">Snap a receipt, add your crew, and let ScenePay figure out who owes what.</p>
 
-  <h2 class="login-title">Welcome back</h2>
-  <p class="login-sub">Log in to split bills with your group</p>
-
-  <form method="POST">
-    {{ form.hidden_tag() }}
-
-    <div class="form-group">
-      <label>{{ form.username.label }}</label>
-      {{ form.username(class="form-input") }}
+    <div class="hero-features">
+      <div class="hero-feature">
+        <div class="hero-feature-icon">🧾</div>
+        <div>
+          <strong>Itemized splitting</strong>
+          <p>Assign each dish to who actually ordered it.</p>
+        </div>
+      </div>
+      <div class="hero-feature">
+        <div class="hero-feature-icon">🔗</div>
+        <div>
+          <strong>Invite by link</strong>
+          <p>No app download needed for your friends to join.</p>
+        </div>
+      </div>
+      <div class="hero-feature">
+        <div class="hero-feature-icon">✅</div>
+        <div>
+          <strong>Track who's paid</strong>
+          <p>See dues update in real time on your dashboard.</p>
+        </div>
+      </div>
     </div>
 
-    <div class="form-group">
-      <label>{{ form.password.label }}</label>
-      {{ form.password(class="form-input") }}
+    <div class="hero-receipt">
+      <div class="receipt-row"><span>Chicken Biryani</span><span>Rs 850</span></div>
+      <div class="receipt-row"><span>Zinger Burger</span><span>Rs 620</span></div>
+      <div class="receipt-row"><span>Soft Drinks x3</span><span>Rs 240</span></div>
+      <div class="receipt-divider"></div>
+      <div class="receipt-row receipt-total"><span>Total</span><span>Rs 1,710</span></div>
     </div>
+  </div>
 
-    <div class="form-group">
-      {{ form.submit(class="login-btn") }}
-    </div>
+  <div class="form-container login-card">
+    <h2 class="login-title">Welcome back</h2>
+    <p class="login-sub">Log in to split bills with your group</p>
 
-    <p class="login-footer">Don't have an account? <a href="{{ url_for('main.register') }}">Register here</a></p>
-  </form>
+    <form method="POST">
+      {{ form.hidden_tag() }}
+
+      <div class="form-group">
+        <label>{{ form.username.label }}</label>
+        {{ form.username(class="form-input") }}
+      </div>
+
+      <div class="form-group">
+        <label>{{ form.password.label }}</label>
+        {{ form.password(class="form-input") }}
+      </div>
+
+      <div class="form-group">
+        {{ form.submit(class="login-btn") }}
+      </div>
+
+      <p class="login-footer">Don't have an account? <a href="{{ url_for('main.register') }}">Register here</a></p>
+    </form>
+  </div>
 </div>
 
 <style>
@@ -68,33 +108,55 @@
     100% { transform: translateY(-10vh) scale(1); opacity: 0; }
   }
 
-  .login-card.form-container {
-    text-align: center;
+  .auth-shell {
+    max-width: 1080px;
+    margin: 40px auto;
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 48px;
+    align-items: center;
     position: relative;
-    animation: loginCardIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) both !important;
     z-index: 1;
+    padding: 0 20px;
   }
 
-  @keyframes loginCardIn {
-    0% { opacity: 0; transform: translateY(30px) scale(0.96); }
-    100% { opacity: 1; transform: translateY(0) scale(1); }
+  .auth-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+    grid-column: 1;
   }
 
-  .login-card .login-mark {
-    width: 60px;
-    height: 60px;
-    margin: 0 auto 16px;
-    border-radius: 16px;
+  .auth-brand .login-mark {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
     background: var(--grad);
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: var(--font-display);
-    font-size: 1.6rem;
+    font-size: 1.2rem;
     font-weight: 800;
     color: #fff;
-    box-shadow: 0 10px 30px rgba(124, 92, 252, 0.45);
-    animation: loginMarkFloat 3.5s ease-in-out infinite !important;
+    box-shadow: 0 8px 24px rgba(124, 92, 252, 0.4);
+    animation: loginMarkFloat 3.5s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+
+  .auth-brand .login-wordmark {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .auth-brand .login-wordmark span {
+    background: var(--grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
   @keyframes loginMarkFloat {
@@ -102,20 +164,127 @@
     50% { transform: translateY(-6px); }
   }
 
-  .login-wordmark {
-    font-family: var(--font-display) !important;
-    font-size: 1.15rem;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    color: var(--text) !important;
-    margin-bottom: 24px;
+  .auth-hero {
+    grid-column: 1;
+    animation: heroIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
-  .login-wordmark span {
+  @keyframes heroIn {
+    0% { opacity: 0; transform: translateX(-24px); }
+    100% { opacity: 1; transform: translateX(0); }
+  }
+
+  .hero-headline {
+    font-family: var(--font-display);
+    font-size: 2.4rem;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin: 0 0 16px;
+    color: var(--text);
+  }
+
+  .hero-sub {
+    color: var(--text-soft);
+    font-size: 1.05rem;
+    max-width: 440px;
+    margin: 0 0 36px;
+  }
+
+  .hero-features {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-bottom: 36px;
+  }
+
+  .hero-feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .hero-feature-icon {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--card-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+  }
+
+  .hero-feature strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+
+  .hero-feature p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--text-faint);
+  }
+
+  .hero-receipt {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 20px 22px;
+    max-width: 320px;
+    font-family: var(--font-body);
+    animation: receiptFloat 4s ease-in-out infinite;
+  }
+
+  @keyframes receiptFloat {
+    0%, 100% { transform: translateY(0) rotate(-1deg); }
+    50% { transform: translateY(-5px) rotate(1deg); }
+  }
+
+  .receipt-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--text-soft);
+    padding: 5px 0;
+  }
+
+  .receipt-divider {
+    border-top: 1px dashed var(--card-border);
+    margin: 8px 0;
+  }
+
+  .receipt-total {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--text);
+    font-size: 0.95rem;
+  }
+
+  .receipt-total span:last-child {
     background: var(--grad);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+
+  .login-card.form-container {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    text-align: center;
+    position: relative;
+    animation: loginCardIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) both !important;
+    margin: 0 !important;
+  }
+
+  @keyframes loginCardIn {
+    0% { opacity: 0; transform: translateY(24px) scale(0.97); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
   }
 
   .login-card .login-title {
@@ -201,10 +370,30 @@
     font-size: 0.88rem !important;
   }
 
+  @media (max-width: 880px) {
+    .auth-shell {
+      display: flex;
+      flex-direction: column-reverse;
+      gap: 32px;
+    }
+
+    .auth-brand {
+      order: -1;
+    }
+
+    .hero-headline {
+      font-size: 1.9rem;
+    }
+
+    .hero-receipt {
+      max-width: 100%;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .scenepay-particles span,
+    .auth-brand .login-mark, .auth-hero, .hero-receipt,
     .login-card.form-container,
-    .login-card .login-mark,
     .login-card .login-btn::after,
     .login-card .form-input {
       animation: none !important;
