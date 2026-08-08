@@ -1,31 +1,220 @@
 {% extends "base.html" %}
-{% block content %}
-  <h2 style="text-align: center;">📝 Register for BillSplitter+</h2>
+{% block title %}Register - ScenePay{% endblock %}
 
-  <form method="POST" style="max-width: 500px; margin: auto; background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+{% block content %}
+<div class="scenepay-particles">
+  <span></span><span></span><span></span><span></span><span></span><span></span>
+</div>
+
+<div class="form-container login-card">
+  <div class="login-mark">S</div>
+
+  <div class="login-wordmark">Scene<span>Pay</span></div>
+
+  <h2 class="login-title">Create your account</h2>
+  <p class="login-sub">Start splitting bills with your group</p>
+
+  <form method="POST">
     {{ form.hidden_tag() }}
 
-    <div style="margin-bottom: 15px;">
-      {{ form.username.label }}<br>
-      {{ form.username(size=32, class_="form-control", style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;") }}
+    <div class="form-group">
+      <label>{{ form.username.label }}</label>
+      {{ form.username(class="form-input") }}
     </div>
 
-    <div style="margin-bottom: 15px;">
-      {{ form.password.label }}<br>
-      {{ form.password(size=32, class_="form-control", style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;") }}
+    <div class="form-group">
+      <label>{{ form.password.label }}</label>
+      {{ form.password(class="form-input") }}
     </div>
 
-    <div style="margin-bottom: 15px;">
-      {{ form.confirm_password.label }}<br>
-      {{ form.confirm_password(size=32, class_="form-control", style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;") }}
+    <div class="form-group">
+      <label>{{ form.confirm_password.label }}</label>
+      {{ form.confirm_password(class="form-input") }}
     </div>
 
-    <div style="text-align: center;">
-      {{ form.submit(class_="btn btn-primary", style="padding: 8px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px;") }}
+    <div class="form-group">
+      {{ form.submit(class="login-btn") }}
     </div>
 
-    <p style="text-align: center; margin-top: 15px;">
-      Already have an account? <a href="{{ url_for('main.login') }}">Login here</a>
-    </p>
+    <p class="login-footer">Already have an account? <a href="{{ url_for('main.login') }}">Login here</a></p>
   </form>
+</div>
+
+<style>
+  .scenepay-particles {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+  }
+
+  .scenepay-particles span {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #C7A8FF;
+    opacity: 0.5;
+    animation: particleRise linear infinite;
+  }
+
+  .scenepay-particles span:nth-child(1) { left: 12%; animation-duration: 14s; animation-delay: 0s; }
+  .scenepay-particles span:nth-child(2) { left: 28%; animation-duration: 18s; animation-delay: -4s; background: #FF6B6B; }
+  .scenepay-particles span:nth-child(3) { left: 45%; animation-duration: 11s; animation-delay: -8s; }
+  .scenepay-particles span:nth-child(4) { left: 63%; animation-duration: 16s; animation-delay: -2s; background: #3FE0B0; }
+  .scenepay-particles span:nth-child(5) { left: 79%; animation-duration: 13s; animation-delay: -6s; }
+  .scenepay-particles span:nth-child(6) { left: 91%; animation-duration: 20s; animation-delay: -10s; background: #FF6B6B; }
+
+  @keyframes particleRise {
+    0% { transform: translateY(110vh) scale(0.6); opacity: 0; }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.4; }
+    100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+  }
+
+  .login-card.form-container {
+    text-align: center;
+    position: relative;
+    animation: loginCardIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) both !important;
+    z-index: 1;
+  }
+
+  @keyframes loginCardIn {
+    0% { opacity: 0; transform: translateY(30px) scale(0.96); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .login-card .login-mark {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 16px;
+    border-radius: 16px;
+    background: var(--grad);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #fff;
+    box-shadow: 0 10px 30px rgba(124, 92, 252, 0.45);
+    animation: loginMarkFloat 3.5s ease-in-out infinite !important;
+  }
+
+  @keyframes loginMarkFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
+  .login-wordmark {
+    font-family: var(--font-display) !important;
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--text) !important;
+    margin-bottom: 24px;
+  }
+
+  .login-wordmark span {
+    background: var(--grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .login-card .login-title {
+    margin-bottom: 4px !important;
+  }
+
+  .login-card .login-sub {
+    color: var(--text-soft) !important;
+    font-size: 0.9rem !important;
+    margin-bottom: 28px !important;
+  }
+
+  .login-card form {
+    text-align: left;
+  }
+
+  .login-card .form-group label {
+    text-align: left !important;
+  }
+
+  .login-card .login-btn {
+    font-family: var(--font-display) !important;
+    display: block !important;
+    width: 100% !important;
+    padding: 13px 20px !important;
+    background: var(--grad) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 12px !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(124, 92, 252, 0.4) !important;
+    transition: transform 0.18s ease, box-shadow 0.18s ease !important;
+  }
+
+  .login-card .login-btn::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
+    transform: skewX(-20deg);
+    transition: left 0.6s ease;
+  }
+
+  .login-card .login-btn:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 10px 30px rgba(255, 107, 107, 0.5) !important;
+  }
+
+  .login-card .login-btn:hover::after {
+    left: 125%;
+  }
+
+  .login-card .form-input {
+    width: 100% !important;
+    padding: 12px 14px !important;
+    border: 1px solid var(--card-border) !important;
+    border-radius: 10px !important;
+    font-size: 1rem !important;
+    font-family: var(--font-body) !important;
+    background: rgba(255,255,255,0.04) !important;
+    color: var(--text) !important;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease !important;
+  }
+
+  .login-card .form-input:focus {
+    outline: none !important;
+    border-color: #C25CFC !important;
+    box-shadow: 0 0 0 3px rgba(194, 92, 252, 0.25) !important;
+    transform: translateY(-1px) !important;
+  }
+
+  .login-card .login-footer {
+    text-align: center !important;
+    margin-top: 20px !important;
+    color: var(--text-soft) !important;
+    font-size: 0.88rem !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scenepay-particles span,
+    .login-card.form-container,
+    .login-card .login-mark,
+    .login-card .login-btn::after,
+    .login-card .form-input {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+</style>
 {% endblock %}
