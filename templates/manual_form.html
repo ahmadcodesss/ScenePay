@@ -178,7 +178,7 @@
     <form method="post" action="{{ url_for('main.manual_form', group_id=group_id) }}">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
-      {% if ocr_items %}
+{% if ocr_items %}
 <div class="ocr-suggestions">
   <p class="ocr-suggestions-label">Found on your receipt — assign to a member:</p>
   <div class="ocr-chips" id="ocr-chips">
@@ -192,6 +192,7 @@
         {% endfor %}
       </select>
       <button type="button" class="ocr-chip-add" onclick="addOcrItem(this)">+ Add</button>
+      <button type="button" class="ocr-chip-discard" onclick="discardOcrItem(this)">✕</button>
     </div>
     {% endfor %}
   </div>
@@ -294,6 +295,10 @@
 
       container.insertAdjacentHTML('beforeend', html);
     }
+    function discardOcrItem(button) {
+  const chip = button.closest('.ocr-chip');
+  chip.remove();
+}
   </script>
 </body>
 

@@ -496,4 +496,22 @@ select option {
 .ocr-chip.added {
   opacity: 0.4;
   pointer-events: none;
+} 
+
+
+
+.ocr-chip-discard {
+  background: transparent !important;
+  color: var(--text-faint) !important;
+  border: 1px solid var(--card-border) !important;
+  padding: 6px 10px !important;
+  font-size: 0.78rem !important;
+  box-shadow: none !important;
+}
+
+.ocr-chip-discard:hover {
+  background: rgba(255, 107, 122, 0.1) !important;
+  color: var(--red) !important;
+  border-color: rgba(255, 107, 122, 0.3) !important;
+  transform: none !important;
 }
