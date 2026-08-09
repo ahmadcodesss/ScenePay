@@ -432,3 +432,68 @@ select option {
   background: #1A1B23;
   color: var(--text);
 }
+
+
+
+.ocr-suggestions {
+  background: rgba(63, 224, 176, 0.06);
+  border: 1px solid rgba(63, 224, 176, 0.25);
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 28px;
+}
+
+.ocr-suggestions-label {
+  font-size: 0.85rem;
+  color: var(--mint);
+  font-weight: 600;
+  margin: 0 0 12px;
+}
+
+.ocr-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.ocr-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 8px 10px;
+}
+
+.ocr-chip-name {
+  font-size: 0.85rem;
+  color: var(--text);
+  text-transform: capitalize;
+}
+
+.ocr-chip-price {
+  font-size: 0.8rem;
+  color: var(--text-faint);
+  font-family: var(--font-display);
+}
+
+.ocr-chip-select {
+  width: auto !important;
+  padding: 4px 6px !important;
+  font-size: 0.78rem !important;
+}
+
+.ocr-chip-add {
+  background: var(--mint) !important;
+  color: #0E0F14 !important;
+  border: none !important;
+  padding: 6px 12px !important;
+  font-size: 0.78rem !important;
+  box-shadow: none !important;
+}
+
+.ocr-chip.added {
+  opacity: 0.4;
+  pointer-events: none;
+}

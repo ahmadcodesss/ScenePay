@@ -178,6 +178,26 @@
     <form method="post" action="{{ url_for('main.manual_form', group_id=group_id) }}">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
+      {% if ocr_items %}
+<div class="ocr-suggestions">
+  <p class="ocr-suggestions-label">Found on your receipt — assign to a member:</p>
+  <div class="ocr-chips" id="ocr-chips">
+    {% for dish, price in ocr_items.items() %}
+    <div class="ocr-chip" data-name="{{ dish }}" data-price="{{ price }}">
+      <span class="ocr-chip-name">{{ dish }}</span>
+      <span class="ocr-chip-price">Rs {{ price }}</span>
+      <select class="ocr-chip-select">
+        {% for i in range(group.num_members) %}
+        <option value="{{ i }}">Member {{ i + 1 }}</option>
+        {% endfor %}
+      </select>
+      <button type="button" class="ocr-chip-add" onclick="addOcrItem(this)">+ Add</button>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
       <div class="members-grid">
         {% for i in range(group.num_members) %}
         <div class="member-block" id="member-block-{{ i }}">
@@ -220,7 +240,37 @@
     </form>
   </div>
 
-  <script>
+ <script>
+    function addOcrItem(button) {
+      const chip = button.closest('.ocr-chip');
+      const name = chip.dataset.name;
+      const price = chip.dataset.price;
+      const memberIndex = chip.querySelector('.ocr-chip-select').value;
+
+      const container = document.getElementById('items-' + memberIndex);
+      const itemIndex = container.children.length;
+
+      const html = `
+        <div class="item-entry">
+          <div>
+            <label>Item</label>
+            <input type="text" name="members[${memberIndex}][items][${itemIndex}][name]" value="${name}" required>
+          </div>
+          <div>
+            <label>Price</label>
+            <input type="number" step="0.01" name="members[${memberIndex}][items][${itemIndex}][price]" value="${price}" required>
+          </div>
+          <div>
+            <label>Share</label>
+            <input type="number" step="0.01" name="members[${memberIndex}][items][${itemIndex}][share]" placeholder="1" required>
+          </div>
+        </div>
+      `;
+
+      container.insertAdjacentHTML('beforeend', html);
+      chip.classList.add('added');
+    }
+
     function addItem(memberIndex) {
       const container = document.getElementById('items-' + memberIndex);
       const itemIndex = container.children.length;

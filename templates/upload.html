@@ -2,29 +2,175 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Upload Receipt - BillSplitter+</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Receipt - ScenePay</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <div class="container">
-    <h2>📄 Upload Receipt for Group #{{ group_id }}</h2>
+  <div class="container upload-card">
+    <div class="upload-icon">📄</div>
+    <h2>Upload receipt</h2>
+    <p class="upload-sub">For group #{{ group_id }} — we'll pull out the items automatically</p>
 
     <form action="{{ url_for('upload.upload_receipt', group_id=group_id) }}" method="post" enctype="multipart/form-data">
-      <label for="receipt">Select Image File:</label>
-      <input type="file" name="receipt_image" accept="image/*" required>
-      <button type="submit">Upload and Continue</button>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+      <label class="dropzone" for="receipt_image">
+        <div class="dropzone-icon">⬆️</div>
+        <p class="dropzone-text"><strong>Click to choose a file</strong></p>
+        <p class="dropzone-hint">JPG or PNG</p>
+        <span class="dropzone-filename" id="file-name"></span>
+      </label>
+      <input type="file" id="receipt_image" name="receipt_image" accept="image/*" required style="display:none;" onchange="document.getElementById('file-name').textContent = this.files[0] ? this.files[0].name : ''">
+
+      <button type="submit" class="upload-btn">Upload and continue</button>
     </form>
 
-    <hr>
+    <div class="upload-divider">
+      <span>or</span>
+    </div>
 
     <div class="alt-option">
       <p>Don't have a receipt?</p>
       <form action="{{ url_for('main.manual_form', group_id=group_id) }}" method="get">
-        <button type="submit">Continue Without Uploading</button>
+        <button type="submit">Continue without uploading</button>
       </form>
     </div>
   </div>
+
+  <style>
+    .upload-card {
+      text-align: center;
+      animation: uploadIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    @keyframes uploadIn {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .upload-icon {
+      font-size: 2rem;
+      margin-bottom: 12px;
+    }
+
+    .upload-card h2 {
+      margin-bottom: 6px;
+    }
+
+    .upload-sub {
+      color: var(--text-soft);
+      font-size: 0.9rem;
+      margin-bottom: 28px;
+    }
+
+    .dropzone {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 36px 20px;
+      border: 2px dashed var(--card-border);
+      border-radius: 16px;
+      cursor: pointer;
+      transition: border-color 0.2s ease, background 0.2s ease;
+      margin-bottom: 20px;
+    }
+
+    .dropzone:hover {
+      border-color: #C25CFC;
+      background: rgba(194, 92, 252, 0.05);
+    }
+
+    .dropzone-icon {
+      font-size: 1.6rem;
+      margin-bottom: 6px;
+    }
+
+    .dropzone-text {
+      margin: 0;
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+
+    .dropzone-hint {
+      margin: 2px 0 0;
+      color: var(--text-faint);
+      font-size: 0.8rem;
+    }
+
+    .dropzone-filename {
+      display: block;
+      margin-top: 10px;
+      color: #C7A8FF;
+      font-size: 0.85rem;
+      font-weight: 600;
+      word-break: break-all;
+    }
+
+    .upload-btn {
+      width: 100%;
+      font-family: var(--font-display);
+      padding: 13px 20px;
+      background: var(--grad);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(124, 92, 252, 0.35);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .upload-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(255, 107, 107, 0.45);
+    }
+
+    .upload-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 26px 0 20px;
+      color: var(--text-faint);
+      font-size: 0.8rem;
+    }
+
+    .upload-divider::before,
+    .upload-divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--card-border);
+    }
+
+    .alt-option p {
+      color: var(--text-soft);
+      font-size: 0.88rem;
+      margin-bottom: 12px;
+    }
+
+    .alt-option button {
+      width: 100%;
+      background: transparent;
+      color: var(--text-soft);
+      border: 1px solid var(--card-border);
+      padding: 11px 20px;
+      border-radius: 12px;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .alt-option button:hover {
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+    }
+  </style>
 </body>
 </html>

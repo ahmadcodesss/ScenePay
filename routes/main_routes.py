@@ -229,7 +229,8 @@ def manual_form(group_id):
 
         return redirect(url_for('main.dashboard'))
 
-    return render_template('manual_form.html', group_id=group_id,group=group)
+    ocr_items = session.pop('ocr_items', None)
+    return render_template('manual_form.html',group_id=group_id, group=group, ocr_items=ocr_items)
 
 @main.route('/logout')
 @login_required
